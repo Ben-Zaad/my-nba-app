@@ -14,7 +14,7 @@ export const HomePage = () => {
     const playersContext = useContext(PlayerContext);
     const {players, favorites, addFavorite, removeFavorite, isLoading, page, totalPages, setPlayerPage, getPlayers} = playersContext;
     const [searchValue, setSearchValue] = useState("")
-    const [listColor, setListColor] = useState("red")
+    const [listColor, setListColor] = useState("Type a Color")
 
     return (
         <HomePageContainer>
@@ -168,5 +168,5 @@ const CustomScrollableContainer = styled(ScrollableContainer)`
 
 const ColoredList = styled(FlexBox)<ColoredListProps>`
     background-color: ${p=>p.color};
-    min-height: 100%;
+    min-height: 100rem;
 `

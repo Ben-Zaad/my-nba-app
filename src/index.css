@@ -22,8 +22,8 @@ code {
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: red;
+  background-color: whitesmoke;
   border-radius: 2rem;
-  border: 6rem solid red;
+  border: 3px solid burlywood;
   background-clip: content-box;
 }

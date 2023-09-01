@@ -8,7 +8,6 @@ export const getPlayerByName = async (name: string, page: number, setTotalPages:
         const response = await axios.get(`${API_URL}`, {params: {search: name, page}})
         setTotalPages(response.data.meta.total_pages)
         return response.data.data.map((el: any) => {
-            console.log('EL',el)
             return {
                 key: el?.id,
                 id: el?.id,
