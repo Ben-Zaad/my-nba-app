@@ -56,13 +56,22 @@ export const HomePage = () => {
                 <InputListColor>
                     <SearchTitle>Select List Color:</SearchTitle>
                 <StyledInput value={listColor} onChange={(e)=>setListColor(e.target.value)} />
-                {favorites.map((player => {
+                    {favorites.length > 0 && <StyledRow key={'title'}>
+                        <StyledImage src={StarIcon}/>
+                        <StyledListBox>First Name</StyledListBox>
+                        <StyledListBox>Last Name</StyledListBox>
+                        <StyledListBox>Height</StyledListBox>
+                        <StyledListBox>Position</StyledListBox>
+                    </StyledRow>}
+                    {favorites.map((player => {
                     return (
-                        <div color={listColor}>
-                            <div>{player.id}</div>
-                            <div>{player.firstName}</div>
-                            <div>{player.lastName}</div>
-                        </div>)
+                        <StyledRow onClick={()=>removeFavorite(player.id)} key={player.key + 'favorites'}>
+                            <StyledImage src={favorites.includes(player) ? BasketBallIcon : GrayBasketBallIcon}/>
+                            <StyledListBox>{player.firstName}</StyledListBox>
+                            <StyledListBox>{player.lastName}</StyledListBox>
+                            <StyledListBox>{player.height}</StyledListBox>
+                            <StyledListBox>{player.position}</StyledListBox>
+                        </StyledRow>)
                 }))}
                 </InputListColor>
                 </ColoredList>
@@ -149,6 +158,7 @@ const HalfScreenContainer = styled(Column)`
 const StyledImage = styled.img`
   width: 20px;
   height: 20px;
+  padding: 1rem;
 `
 const ArrowButton = styled.button``
 
@@ -158,6 +168,5 @@ const CustomScrollableContainer = styled(ScrollableContainer)`
 
 const ColoredList = styled(FlexBox)<ColoredListProps>`
     background-color: ${p=>p.color};
-  justify-content: center;
-  align-items: center;
+    min-height: 100%;
 `
