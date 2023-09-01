@@ -2,9 +2,9 @@ import axios from "axios";
 import {API_URL} from "./apiConfig";
 import {IPlayer} from "../context/types";
 
-export const getPlayerByName = async (name: string) : Promise<IPlayer[]> => {
+export const getPlayerByName = async (name: string, page: number): Promise<IPlayer[]> => {
     try {
-        const response = await axios.get(`${API_URL}`, {params: {search: name}})
+        const response = await axios.get(`${API_URL}`, {params: {search: name, page}})
         return response.data.data.map((el: any) => {
             return {
                 key: el?.id,

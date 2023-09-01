@@ -17,3 +17,7 @@ export const Row = styled(FlexBox)`
 export const Column = styled(FlexBox)`
   flex-direction: column;
 `
+
+export const ScrollableContainer = styled.div`
+  overflow-y: scroll;
+`

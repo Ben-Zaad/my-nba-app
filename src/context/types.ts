@@ -19,9 +19,11 @@ export interface ITeam {
 
 export interface IPlayerContextType {
     players: IPlayer[],
+    page: number,
     isLoading: boolean,
     compares: IPlayer[];
-    getPlayers: (playerName: string) => void;
+    setPlayerPage: (newPage: number) => void;
+    getPlayers: (playerName: string, page: number) => void;
     addCompare: (player: IPlayer) => void;
     removeCompare: (id: number | string) => void;
 }

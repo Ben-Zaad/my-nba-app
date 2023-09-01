@@ -5,9 +5,13 @@ import {getPlayerByName} from "../api/playerService";
 
 const initialContext = {
     players: [],
+    page: 1,
     isLoading: false,
     compares: [],
-    getPlayers: () => {},
+    getPlayers: () => {
+    },
+    setPlayerPage: () => {
+    },
     addCompare: () => {
     },
     removeCompare: () => {
@@ -21,6 +25,7 @@ const PlayersProvider: React.FC<IPlayersProviderProps> = (
     {
         children,
     }) => {
+    const [page, setPage] = useState(1);
     const [players, setPlayers] = useState<IPlayer[]>(() => {
         return JSON.parse(localStorage.getItem("players") || "[]");
     })
@@ -29,16 +34,20 @@ const PlayersProvider: React.FC<IPlayersProviderProps> = (
         return JSON.parse(localStorage.getItem("compares") || "[]");
     });
 
-    const getPlayers = async (playerName: string) => {
+    const getPlayers = async (playerName: string, page: number) => {
         try {
-            const fetchedPlayers = await getPlayerByName(playerName)
-            if (fetchedPlayers){
+            const fetchedPlayers = await getPlayerByName(playerName, page)
+            if (fetchedPlayers) {
                 setPlayers(fetchedPlayers)
                 setIsLoading(true)
             }
         } catch (err) {
 
         }
+    }
+
+    const setPlayerPage = (newPage: number) => {
+        setPage(newPage)
     }
 
     useEffect(() => {
@@ -63,8 +72,10 @@ const PlayersProvider: React.FC<IPlayersProviderProps> = (
         <PlayerContext.Provider
             value={{
                 players,
+                page,
                 isLoading,
                 compares,
+                setPlayerPage,
                 getPlayers,
                 addCompare,
                 removeCompare,
