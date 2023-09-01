@@ -2,7 +2,7 @@ import {useContext, useState} from "react";
 import styled from "styled-components";
 import {Column, Row} from "../components/styledComponents";
 import {PlayerContext} from "../context/PlayerContext";
-
+import BasketBallIcon from "../assets/basket_ball_icon.svg";
 export const HomePage = () => {
     const playersContext = useContext(PlayerContext);
     const {players, getPlayers} = playersContext;
@@ -18,6 +18,7 @@ export const HomePage = () => {
                 </SearchContainer>
                 {players?.map((player) => {
                     return (<StyledRow key={player.key}>
+                        <StyledImage src={BasketBallIcon}/>
                         <StyledListBox>{player.firstName}</StyledListBox>
                         <StyledListBox>{player.lastName}</StyledListBox>
                         <StyledListBox>{player.position}</StyledListBox>
@@ -62,6 +63,8 @@ const SearchButton = styled.button`
 
 const StyledRow = styled(Row)`
   width: 100%;
+  height: 2rem;
+  align-items: center;
   background-color: royalblue;
   border-bottom: 1px solid darkblue;
   justify-content: space-around;
@@ -74,4 +77,9 @@ const StyledListBox = styled.div`
 
 const HalfScreenContainer = styled(Column)`
   width: 50%;
+`
+
+const StyledImage = styled.img`
+  width: 20px;
+  height: 20px;
 `
