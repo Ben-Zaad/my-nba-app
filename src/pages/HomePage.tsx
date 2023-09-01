@@ -1,22 +1,30 @@
 import {useContext, useState} from "react";
 import styled from "styled-components";
-import {Column, FlexBox} from "../components/styledComponents";
+import {Column, FlexBox, Row} from "../components/styledComponents";
 import {PlayerContext} from "../context/PlayerContext";
 
 export const HomePage = () => {
     const playersContext = useContext(PlayerContext);
-    const {getPlayers} = playersContext;
+    const {players, getPlayers} = playersContext;
     const [searchValue, setSeatchValue] = useState("")
 
     return (
         <HomePageContainer>
-            <SearchContainer>
-                <Column>
-                    <SearchTitle>Enter Player's Name Here:</SearchTitle>
-                    <StyledInput value={searchValue} onChange={(e) => setSeatchValue(e.target.value)}/>
-                    <button onClick={()=> getPlayers(searchValue)} />
-                </Column>
-            </SearchContainer>
+            <Column>
+                <SearchContainer>
+                    <Column>
+                        <SearchTitle>Enter Player's Name Here:</SearchTitle>
+                        <StyledInput value={searchValue} onChange={(e) => setSeatchValue(e.target.value)}/>
+                        <SearchButton onClick={() => getPlayers(searchValue)}>Search</SearchButton>
+                    </Column>
+                </SearchContainer>
+                {players?.map((player) => {
+                    return (<Row key={player.key}>
+                        <div>{player.firstName}</div>
+                        <div>{player.lastName}</div>
+                    </Row>)
+                })}
+            </Column>
         </HomePageContainer>
     )
 }
@@ -41,4 +49,9 @@ const StyledInput = styled.input`
 
 const SearchTitle = styled.div`
   font-size: 14px;
+`
+
+const SearchButton = styled.button`
+  height: 50px;
+  width: 100px;
 `

@@ -1,8 +1,9 @@
 export interface IPlayer {
     key: string;
     id: number | string;
-    name?: string;
-    image?: string;
+    firstName?: string;
+    lastName?: string;
+    position?: string;
 }
 
 export interface IPlayerContextType {

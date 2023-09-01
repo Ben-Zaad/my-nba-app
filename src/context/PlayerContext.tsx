@@ -32,7 +32,10 @@ const PlayersProvider: React.FC<IPlayersProviderProps> = (
     const getPlayers = async (playerName: string) => {
         try {
             const fetchedPlayers = await getPlayerByName(playerName)
-            // setPlayers(fetchedPlayers)
+            if (fetchedPlayers){
+                setPlayers(fetchedPlayers)
+                setIsLoading(true)
+            }
         } catch (err) {
 
         }
