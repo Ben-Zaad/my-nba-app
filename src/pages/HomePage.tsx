@@ -10,21 +10,20 @@ export const HomePage = () => {
 
     return (
         <HomePageContainer>
-            <Column>
+            <HalfScreenContainer>
                 <SearchContainer>
-                    <Column>
                         <SearchTitle>Enter Player's Name Here:</SearchTitle>
                         <StyledInput value={searchValue} onChange={(e) => setSeatchValue(e.target.value)}/>
                         <SearchButton onClick={() => getPlayers(searchValue)}>Search</SearchButton>
-                    </Column>
                 </SearchContainer>
                 {players?.map((player) => {
-                    return (<Row key={player.key}>
-                        <div>{player.firstName}</div>
-                        <div>{player.lastName}</div>
-                    </Row>)
+                    return (<StyledRow key={player.key}>
+                        <StyledListBox>{player.firstName}</StyledListBox>
+                        <StyledListBox>{player.lastName}</StyledListBox>
+                        <StyledListBox>{player.position}</StyledListBox>
+                    </StyledRow>)
                 })}
-            </Column>
+            </HalfScreenContainer>
         </HomePageContainer>
     )
 }
@@ -35,16 +34,20 @@ const HomePageContainer = styled.div`
   background-color: #282c34;
 `
 
-const SearchContainer = styled(FlexBox)`
+const SearchContainer = styled(Column)`
   align-content: center;
-  width: 50%;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
   height: 100%;
   background-color: red;
 `
 
 const StyledInput = styled.input`
-  width: 30rem;
+  width: 20rem;
   height: 2rem;
+  border-radius: 8px;
+  padding: 0 0 0 1rem;
 `
 
 const SearchTitle = styled.div`
@@ -52,6 +55,23 @@ const SearchTitle = styled.div`
 `
 
 const SearchButton = styled.button`
-  height: 50px;
-  width: 100px;
+  height: 30px;
+  width: 80px;
+  border-radius: 8px;
+`
+
+const StyledRow = styled(Row)`
+  width: 100%;
+  background-color: royalblue;
+  border-bottom: 1px solid darkblue;
+  justify-content: space-around;
+  text-align: left;
+`
+
+const StyledListBox = styled.div`
+  width: 25%;
+`
+
+const HalfScreenContainer = styled(Column)`
+  width: 50%;
 `

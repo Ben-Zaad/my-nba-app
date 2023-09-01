@@ -4,6 +4,17 @@ export interface IPlayer {
     firstName?: string;
     lastName?: string;
     position?: string;
+    team?: ITeam;
+}
+
+export interface ITeam {
+    id: number,
+    fullName: string,
+    teamName: string,
+    abbreviation: string,
+    city: string,
+    conference: string,
+    division: string,
 }
 
 export interface IPlayerContextType {
