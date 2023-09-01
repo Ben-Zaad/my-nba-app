@@ -3,6 +3,7 @@ export interface IPlayer {
     id: number | string;
     firstName?: string;
     lastName?: string;
+    height?: string;
     position?: string;
     team?: ITeam;
 }
@@ -22,11 +23,11 @@ export interface IPlayerContextType {
     page: number,
     totalPages: number,
     isLoading: boolean,
-    compares: IPlayer[];
+    favorites: IPlayer[];
     setPlayerPage: (newPage: number, playerName: string) => void;
     getPlayers: (playerName: string, page: number) => void;
-    addCompare: (player: IPlayer) => void;
-    removeCompare: (id: number | string) => void;
+    addFavorite: (player: IPlayer) => void;
+    removeFavorite: (id: number | string) => void;
 }
 
 export interface IPlayersProviderProps {

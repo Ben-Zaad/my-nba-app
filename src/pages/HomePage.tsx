@@ -1,16 +1,24 @@
 import {useContext, useState} from "react";
 import styled from "styled-components";
-import {Column, Row} from "../components/styledComponents";
+import {Column, FlexBox, Row, ScrollableContainer} from "../components/styledComponents";
 import {PlayerContext} from "../context/PlayerContext";
 import BasketBallIcon from "../assets/basket_ball_icon.svg";
+import GrayBasketBallIcon from "../assets/gray_basket_ball_icon.svg";
+import StarIcon from "../assets/star-icon.svg";
+
+interface ColoredListProps {
+    color: string;
+}
 
 export const HomePage = () => {
     const playersContext = useContext(PlayerContext);
-    const {players, isLoading, page, totalPages, setPlayerPage, getPlayers} = playersContext;
+    const {players, favorites, addFavorite, removeFavorite, isLoading, page, totalPages, setPlayerPage, getPlayers} = playersContext;
     const [searchValue, setSearchValue] = useState("")
+    const [listColor, setListColor] = useState("red")
 
     return (
         <HomePageContainer>
+            <Row>
             <HalfScreenContainer>
                 <SearchContainer>
                     <SearchTitle>Enter Player's Name Here:</SearchTitle>
@@ -24,23 +32,42 @@ export const HomePage = () => {
                     </SearchFieldButtonRow>
                     Page {page} out of {totalPages}
                 </SearchContainer>
-                <div>
                     <StyledRow key={'title'}>
-                        <StyledImage src={BasketBallIcon}/>
+                        <StyledImage src={StarIcon}/>
                         <StyledListBox>First Name</StyledListBox>
                         <StyledListBox>Last Name</StyledListBox>
+                        <StyledListBox>Height</StyledListBox>
                         <StyledListBox>Position</StyledListBox>
                     </StyledRow>
+                <CustomScrollableContainer>
                     {isLoading ? <>Loading...</> : players?.map((player) => {
-                        return (<StyledRow key={player.key}>
-                            <StyledImage src={BasketBallIcon}/>
+                        return (<StyledRow onClick={()=>addFavorite(player)} key={player.key}>
+                            <StyledImage src={favorites.includes(player) ? BasketBallIcon : GrayBasketBallIcon}/>
                             <StyledListBox>{player.firstName}</StyledListBox>
                             <StyledListBox>{player.lastName}</StyledListBox>
+                            <StyledListBox>{player.height}</StyledListBox>
                             <StyledListBox>{player.position}</StyledListBox>
                         </StyledRow>)
                     })}
-                </div>
+                </CustomScrollableContainer>
             </HalfScreenContainer>
+            <HalfScreenContainer>
+                <ColoredList color={listColor}>
+                <InputListColor>
+                    <SearchTitle>Select List Color:</SearchTitle>
+                <StyledInput value={listColor} onChange={(e)=>setListColor(e.target.value)} />
+                {favorites.map((player => {
+                    return (
+                        <div color={listColor}>
+                            <div>{player.id}</div>
+                            <div>{player.firstName}</div>
+                            <div>{player.lastName}</div>
+                        </div>)
+                }))}
+                </InputListColor>
+                </ColoredList>
+            </HalfScreenContainer>
+            </Row>
         </HomePageContainer>
     )
 }
@@ -49,6 +76,7 @@ const HomePageContainer = styled.div`
   width: 100vw;
   height: 100vh;
   background-color: #282c34;
+  overflow: hidden;
 `
 
 const SearchContainer = styled(Column)`
@@ -58,6 +86,13 @@ const SearchContainer = styled(Column)`
   width: 100%;
   min-height: 8rem;
   background: linear-gradient(darkred, red, darkred);
+`
+
+const InputListColor = styled(Column)`
+  align-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 8rem;
 `
 
 const StyledInput = styled.input`
@@ -116,3 +151,13 @@ const StyledImage = styled.img`
   height: 20px;
 `
 const ArrowButton = styled.button``
+
+const CustomScrollableContainer = styled(ScrollableContainer)`
+  max-height: 44rem;
+`
+
+const ColoredList = styled(FlexBox)<ColoredListProps>`
+    background-color: ${p=>p.color};
+  justify-content: center;
+  align-items: center;
+`

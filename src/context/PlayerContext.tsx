@@ -8,14 +8,14 @@ const initialContext = {
     page: 1,
     totalPages: 0,
     isLoading: false,
-    compares: [],
+    favorites: [],
     getPlayers: () => {
     },
     setPlayerPage: () => {
     },
-    addCompare: () => {
+    addFavorite: () => {
     },
-    removeCompare: () => {
+    removeFavorite: () => {
     },
 };
 
@@ -28,12 +28,10 @@ const PlayersProvider: React.FC<IPlayersProviderProps> = (
     }) => {
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
-    const [players, setPlayers] = useState<IPlayer[]>(() => {
-        return JSON.parse(localStorage.getItem("players") || "[]");
-    })
+    const [players, setPlayers] = useState<IPlayer[]>([])
     const [isLoading, setIsLoading] = useState<boolean>(false)
-    const [compares, setCompares] = useState<IPlayer[]>(() => {
-        return JSON.parse(localStorage.getItem("compares") || "[]");
+    const [favorites, setFavorites] = useState<IPlayer[]>(() => {
+        return JSON.parse(localStorage.getItem("favorites") || "[]");
     });
 
     const getPlayers = async (playerName: string, page: number) => {
@@ -64,21 +62,21 @@ const PlayersProvider: React.FC<IPlayersProviderProps> = (
     }
 
     useEffect(() => {
-        localStorage.setItem("compares", JSON.stringify(compares));
-    }, [compares]);
+        localStorage.setItem("compares", JSON.stringify(favorites));
+    }, [favorites]);
 
-    const addCompare = (player: IPlayer) => {
-        const playerExists = compares.some(
+    const addFavorite = (player: IPlayer) => {
+        const playerExists = favorites.some(
             (compare) => compare.id === player.id
         );
 
         if (!playerExists) {
-            setCompares((prev) => [...prev, player]);
+            setFavorites((prev) => [...prev, player]);
         }
     };
 
-    const removeCompare = (id: string | number) => {
-        setCompares((prev) => prev.filter((player) => player.id !== id));
+    const removeFavorite = (id: string | number) => {
+        setFavorites((prev) => prev.filter((player) => player.id !== id));
     };
 
     return (
@@ -88,11 +86,11 @@ const PlayersProvider: React.FC<IPlayersProviderProps> = (
                 page,
                 totalPages,
                 isLoading,
-                compares,
+                favorites,
                 setPlayerPage,
                 getPlayers,
-                addCompare,
-                removeCompare,
+                addFavorite,
+                removeFavorite,
             }}
         >
             {children}
