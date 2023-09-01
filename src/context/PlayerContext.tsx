@@ -7,6 +7,7 @@ const initialContext = {
     players: [],
     isLoading: false,
     compares: [],
+    getPlayers: () => {},
     addCompare: () => {
     },
     removeCompare: () => {
@@ -61,6 +62,7 @@ const PlayersProvider: React.FC<IPlayersProviderProps> = (
                 players,
                 isLoading,
                 compares,
+                getPlayers,
                 addCompare,
                 removeCompare,
             }}

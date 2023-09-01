@@ -9,6 +9,7 @@ export interface IPlayerContextType {
     players: IPlayer[],
     isLoading: boolean,
     compares: IPlayer[];
+    getPlayers: (playerName: string) => void;
     addCompare: (player: IPlayer) => void;
     removeCompare: (id: number | string) => void;
 }
