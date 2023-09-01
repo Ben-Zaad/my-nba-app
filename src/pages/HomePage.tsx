@@ -1,12 +1,12 @@
 import {useContext, useState} from "react";
 import styled from "styled-components";
-import {Column, Row, ScrollableContainer} from "../components/styledComponents";
+import {Column, Row} from "../components/styledComponents";
 import {PlayerContext} from "../context/PlayerContext";
 import BasketBallIcon from "../assets/basket_ball_icon.svg";
 
 export const HomePage = () => {
     const playersContext = useContext(PlayerContext);
-    const {players, page, getPlayers} = playersContext;
+    const {players, isLoading, page, totalPages, setPlayerPage, getPlayers} = playersContext;
     const [searchValue, setSearchValue] = useState("")
 
     return (
@@ -16,10 +16,13 @@ export const HomePage = () => {
                     <SearchTitle>Enter Player's Name Here:</SearchTitle>
                     <StyledInput value={searchValue} onChange={(e) => setSearchValue(e.target.value)}/>
                     <SearchFieldButtonRow>
-                        {"<-"}
-                    <SearchButton onClick={() => getPlayers(searchValue, page)}>Search</SearchButton>
-                        {"->"}
+                        {page > 0 && players.length > 0 && totalPages &&
+                          <ArrowButton onClick={() => setPlayerPage(page - 1, searchValue)}>{"<-"}</ArrowButton>}
+                        <SearchButton onClick={() => getPlayers(searchValue, page)}>Search</SearchButton>
+                        {page < totalPages &&
+                          <ArrowButton onClick={() => setPlayerPage(page + 1, searchValue)}>{"->"}</ArrowButton>}
                     </SearchFieldButtonRow>
+                    Page {page} out of {totalPages}
                 </SearchContainer>
                 <div>
                     <StyledRow key={'title'}>
@@ -28,7 +31,7 @@ export const HomePage = () => {
                         <StyledListBox>Last Name</StyledListBox>
                         <StyledListBox>Position</StyledListBox>
                     </StyledRow>
-                    {players?.map((player) => {
+                    {isLoading ? <>Loading...</> : players?.map((player) => {
                         return (<StyledRow key={player.key}>
                             <StyledImage src={BasketBallIcon}/>
                             <StyledListBox>{player.firstName}</StyledListBox>
@@ -71,7 +74,8 @@ const StyledInput = styled.input`
 `
 
 const SearchTitle = styled.div`
-  font-size: 14px;
+  font-size: 16px;
+  font-weight: 600;
   padding-top: 1rem;
   padding-bottom: 1rem;
 `
@@ -111,3 +115,4 @@ const StyledImage = styled.img`
   width: 20px;
   height: 20px;
 `
+const ArrowButton = styled.button``

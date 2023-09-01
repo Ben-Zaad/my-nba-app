@@ -1,10 +1,12 @@
 import axios from "axios";
 import {API_URL} from "./apiConfig";
 import {IPlayer} from "../context/types";
+import {Dispatch, SetStateAction} from "react";
 
-export const getPlayerByName = async (name: string, page: number): Promise<IPlayer[]> => {
+export const getPlayerByName = async (name: string, page: number, setTotalPages: Dispatch<SetStateAction<number>>): Promise<IPlayer[]> => {
     try {
         const response = await axios.get(`${API_URL}`, {params: {search: name, page}})
+        setTotalPages(response.data.meta.total_pages)
         return response.data.data.map((el: any) => {
             return {
                 key: el?.id,

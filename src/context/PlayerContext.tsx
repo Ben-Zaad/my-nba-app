@@ -6,6 +6,7 @@ import {getPlayerByName} from "../api/playerService";
 const initialContext = {
     players: [],
     page: 1,
+    totalPages: 0,
     isLoading: false,
     compares: [],
     getPlayers: () => {
@@ -26,6 +27,7 @@ const PlayersProvider: React.FC<IPlayersProviderProps> = (
         children,
     }) => {
     const [page, setPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(0);
     const [players, setPlayers] = useState<IPlayer[]>(() => {
         return JSON.parse(localStorage.getItem("players") || "[]");
     })
@@ -35,19 +37,30 @@ const PlayersProvider: React.FC<IPlayersProviderProps> = (
     });
 
     const getPlayers = async (playerName: string, page: number) => {
+        setIsLoading(true)
         try {
-            const fetchedPlayers = await getPlayerByName(playerName, page)
+            const fetchedPlayers = await getPlayerByName(playerName, page, setTotalPages)
             if (fetchedPlayers) {
                 setPlayers(fetchedPlayers)
-                setIsLoading(true)
+                setIsLoading(false)
             }
         } catch (err) {
 
         }
     }
 
-    const setPlayerPage = (newPage: number) => {
+    const setPlayerPage = async (newPage: number, playerName: string) => {
+        setIsLoading(true)
         setPage(newPage)
+        try {
+            const fetchedPlayers = await getPlayerByName(playerName, newPage, setTotalPages)
+            if (fetchedPlayers) {
+                setPlayers(fetchedPlayers)
+                setIsLoading(false)
+            }
+        } catch (e) {
+
+        }
     }
 
     useEffect(() => {
@@ -73,6 +86,7 @@ const PlayersProvider: React.FC<IPlayersProviderProps> = (
             value={{
                 players,
                 page,
+                totalPages,
                 isLoading,
                 compares,
                 setPlayerPage,
