@@ -38,6 +38,7 @@ export const HomePage = () => {
                         <StyledListBox>Last Name</StyledListBox>
                         <StyledListBox>Height</StyledListBox>
                         <StyledListBox>Position</StyledListBox>
+                        <StyledListBox>Team</StyledListBox>
                     </StyledRow>
                 <CustomScrollableContainer>
                     {isLoading ? <>Loading...</> : players?.map((player) => {
@@ -47,6 +48,7 @@ export const HomePage = () => {
                             <StyledListBox>{player.lastName}</StyledListBox>
                             <StyledListBox>{player.height}</StyledListBox>
                             <StyledListBox>{player.position}</StyledListBox>
+                            <StyledListBox>{player?.team?.teamName}</StyledListBox>
                         </StyledRow>)
                     })}
                 </CustomScrollableContainer>
@@ -64,6 +66,7 @@ export const HomePage = () => {
                         <StyledListBox>Last Name</StyledListBox>
                         <StyledListBox>Height</StyledListBox>
                         <StyledListBox>Position</StyledListBox>
+                      <StyledListBox>Team</StyledListBox>
                     </StyledRow>}
                     {favorites.map((player => {
                     return (
@@ -73,6 +76,7 @@ export const HomePage = () => {
                             <StyledListBox>{player.lastName}</StyledListBox>
                             <StyledListBox>{player.height}</StyledListBox>
                             <StyledListBox>{player.position}</StyledListBox>
+                            <StyledListBox>{player?.team?.teamName}</StyledListBox>
                         </StyledRow>)
                 }))}
                 </InputListColor>
@@ -86,7 +90,7 @@ export const HomePage = () => {
 const HomePageContainer = styled.div`
   width: 100vw;
   height: 100vh;
-  background-color: #282c34;
+  background-color: lightslategray;
   overflow: hidden;
 `
 
@@ -95,7 +99,7 @@ const SearchContainer = styled(Column)`
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  min-height: 8rem;
+  min-height: 10rem;
   background: linear-gradient(darkred, red, darkred);
 `
 
@@ -123,8 +127,7 @@ const SearchTitle = styled.div`
   font-size: 16px;
   font-weight: 600;
   padding-top: 1rem;
-  padding-bottom: 1rem;
-`
+  `
 
 const SearchButton = styled.button`
   height: 30px;
@@ -142,7 +145,7 @@ const StyledRow = styled(Row)`
   border-bottom: 1px solid darkblue;
   justify-content: space-around;
   text-align: left;
-  
+  cursor: pointer;
 `
 
 const SearchFieldButtonRow = styled(Row)`
@@ -175,5 +178,6 @@ const ColoredList = styled(FlexBox)<ColoredListProps>`
 `
 
 const ColorListPadding = styled.div`
-  padding-bottom: 1rem;
+  min-height: 10rem;
+  text-align: center;
 `

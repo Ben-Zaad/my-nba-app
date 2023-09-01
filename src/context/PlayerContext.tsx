@@ -62,7 +62,7 @@ const PlayersProvider: React.FC<IPlayersProviderProps> = (
     }
 
     useEffect(() => {
-        localStorage.setItem("compares", JSON.stringify(favorites));
+        localStorage.setItem("favorites", JSON.stringify(favorites));
     }, [favorites]);
 
     const addFavorite = (player: IPlayer) => {
