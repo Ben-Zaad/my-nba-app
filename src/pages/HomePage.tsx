@@ -1,19 +1,19 @@
 import {useContext, useState} from "react";
 import styled from "styled-components";
-import {Column, FlexBox, Row} from "../components/styledComponents";
+import {Column, Row} from "../components/styledComponents";
 import {PlayerContext} from "../context/PlayerContext";
 
 export const HomePage = () => {
     const playersContext = useContext(PlayerContext);
     const {players, getPlayers} = playersContext;
-    const [searchValue, setSeatchValue] = useState("")
+    const [searchValue, setSearchValue] = useState("")
 
     return (
         <HomePageContainer>
             <HalfScreenContainer>
                 <SearchContainer>
                         <SearchTitle>Enter Player's Name Here:</SearchTitle>
-                        <StyledInput value={searchValue} onChange={(e) => setSeatchValue(e.target.value)}/>
+                        <StyledInput value={searchValue} onChange={(e) => setSearchValue(e.target.value)}/>
                         <SearchButton onClick={() => getPlayers(searchValue)}>Search</SearchButton>
                 </SearchContainer>
                 {players?.map((player) => {
