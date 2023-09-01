@@ -54,8 +54,10 @@ export const HomePage = () => {
             <HalfScreenContainer>
                 <ColoredList color={listColor}>
                 <InputListColor>
-                    <SearchTitle>Select List Color:</SearchTitle>
+                    <ColorListPadding>
+                    <SearchTitle>Type Here To Change This List Color:</SearchTitle>
                 <StyledInput value={listColor} onChange={(e)=>setListColor(e.target.value)} />
+                    </ColorListPadding>
                     {favorites.length > 0 && <StyledRow key={'title'}>
                         <StyledImage src={StarIcon}/>
                         <StyledListBox>First Name</StyledListBox>
@@ -140,6 +142,7 @@ const StyledRow = styled(Row)`
   border-bottom: 1px solid darkblue;
   justify-content: space-around;
   text-align: left;
+  
 `
 
 const SearchFieldButtonRow = styled(Row)`
@@ -163,10 +166,14 @@ const StyledImage = styled.img`
 const ArrowButton = styled.button``
 
 const CustomScrollableContainer = styled(ScrollableContainer)`
-  max-height: 44rem;
+  max-height: 70vh;
 `
 
 const ColoredList = styled(FlexBox)<ColoredListProps>`
     background-color: ${p=>p.color};
     min-height: 100rem;
+`
+
+const ColorListPadding = styled.div`
+  padding-bottom: 1rem;
 `
