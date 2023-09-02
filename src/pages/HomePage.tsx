@@ -35,7 +35,7 @@ export const HomePage = () => {
 
     const TABLE_HEADERS = ['First Name', 'Last Name', 'Height', 'Position', 'Team']
 
-    const handleKeys = (event: { key: string; repeat: any; }) => {
+    const handleKeys = (event: Partial<{ key: string; repeat: any; }>) => {
         if (event.key === "Enter" && !event.repeat && !isLoading) {
             setPlayerPage(1, searchValue)
         }
