@@ -1,12 +1,17 @@
-import {useContext, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import styled from "styled-components";
-import {Column, FlexBox, Row, ScrollableContainer} from "../components/styledComponents";
-import {PlayerContext} from "../context/PlayerContext";
-import BasketBallIcon from "../assets/basket_ball_icon.svg";
-import GrayBasketBallIcon from "../assets/gray_basket_ball_icon.svg";
-import StarIcon from "../assets/star-icon.svg";
 import {SketchPicker} from 'react-color'
 import Switch from "react-switch";
+
+import {Column, FlexBox, Row, ScrollableContainer} from "../components/styledComponents";
+import {PlayerContext} from "../context/PlayerContext";
+
+import BasketBallIcon from "../assets/basket_ball_icon.svg";
+import GrayBasketBallIcon from "../assets/gray_basket_ball_icon.svg";
+import RightArrow from "../assets/right_arrow_icon.svg"
+import LeftArrow from "../assets/left_arrow_icon.svg"
+import StarIcon from "../assets/star-icon.svg";
+
 
 interface ColoredListProps {
     color: string;
@@ -31,6 +36,28 @@ export const HomePage = () => {
 
     const TABLE_HEADERS = ['First Name', 'Last Name', 'Height', 'Position', 'Team']
 
+    const handleKeys = (event: { key: string; repeat: any; }) => {
+        if (event.key === "Enter" && !event.repeat && !isLoading) {
+            getPlayers(searchValue, page)
+        }
+        if (event.key === "ArrowRight" && !event.repeat && !isLoading) {
+            getPlayers(searchValue, page)
+            setPlayerPage(page + 1, searchValue)
+        }
+        if (event.key === "ArrowLeft" && !event.repeat && !isLoading) {
+            getPlayers(searchValue, page)
+            setPlayerPage(page + 1, searchValue)
+        }
+    }
+
+    useEffect(() => {
+        const inputElement = document;
+        inputElement.addEventListener("keydown", handleKeys);
+        return () => {
+            inputElement.removeEventListener("keydown", handleKeys);
+        };
+    });
+
     const RenderTableTitle = (values: string[], key: string) => {
         return (<StyledRow key={key}>
             <StyledImage src={StarIcon}/>
@@ -50,10 +77,10 @@ export const HomePage = () => {
                         <StyledInput value={searchValue} onChange={(e) => setSearchValue(e.target.value)}/>
                         <SearchFieldButtonRow>
                             {page > 0 && players.length > 0 && totalPages &&
-                              <ArrowButton onClick={() => setPlayerPage(page - 1, searchValue)}>{"<-"}</ArrowButton>}
+                              <ArrowButton onClick={() => setPlayerPage(page - 1, searchValue)}><StyledImage src={LeftArrow}/></ArrowButton>}
                             <SearchButton onClick={() => getPlayers(searchValue, page)}>Search</SearchButton>
                             {page < totalPages &&
-                              <ArrowButton onClick={() => setPlayerPage(page + 1, searchValue)}>{"->"}</ArrowButton>}
+                              <ArrowButton onClick={() => setPlayerPage(page + 1, searchValue)}><StyledImage src={RightArrow}/></ArrowButton>}
                         </SearchFieldButtonRow>
                         Page {page} out of {totalPages}
                     </SearchContainer>
@@ -158,6 +185,7 @@ const SearchTitle = styled.div`
   font-size: 16px;
   font-weight: 600;
   padding-top: 1rem;
+  padding-bottom: 5px;
 `
 
 const SearchButton = styled.button`
@@ -195,9 +223,13 @@ const HalfScreenContainer = styled(Column)`
 const StyledImage = styled.img`
   width: 20px;
   height: 20px;
-  padding: 1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
 `
-const ArrowButton = styled.button``
+const ArrowButton = styled(FlexBox)`
+  cursor: pointer;
+  align-items: center;
+`
 
 const CustomScrollableContainer = styled(ScrollableContainer)`
   max-height: 70vh;
