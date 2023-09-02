@@ -114,6 +114,7 @@ export const HomePage = () => {
                             </ColorListPadding>
                             {favorites.length > 0 &&
                                 RenderTableTitle(TABLE_HEADERS, 'title')}
+                            <FavoritesContainer>
                             {favorites.map((player => {
                                 return (
                                     <StyledRow onClick={() => removeFavorite(player.id)} key={player.key + 'favorites'}>
@@ -126,6 +127,7 @@ export const HomePage = () => {
                                         <StyledListBox>{player?.team?.teamName}</StyledListBox>
                                     </StyledRow>)
                             }))}
+                            </FavoritesContainer>
                         </InputListColor>
                     </ColoredList>
                 </HalfScreenContainer>
@@ -247,4 +249,10 @@ const PaletteContainer = styled.div`
 const ColorCotainer = styled.div`
   background: linear-gradient(darkred, whitesmoke 80%, darkred);
   height: 100%;
+`
+
+const FavoritesContainer = styled.div`
+  width: 100%;
+  overflow: scroll;
+  max-height: 71.8vh;
 `
