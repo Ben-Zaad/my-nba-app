@@ -61,7 +61,7 @@ export const HomePage = () => {
                     <CustomScrollableContainer>
                         {isLoading ? <>Loading...</> : players?.map((player) => {
                             return (<StyledRow onClick={() => addFavorite(player)} key={player.key}>
-                                <StyledImage src={favorites.includes(player) ? BasketBallIcon : GrayBasketBallIcon}/>
+                                <StyledImage src={favorites.filter(fav=>fav.id === player.id)?.length > 0 ? BasketBallIcon : GrayBasketBallIcon}/>
                                 <StyledListBox>{player.firstName}</StyledListBox>
                                 <StyledListBox>{player.lastName}</StyledListBox>
                                 <StyledListBox>{player.height}</StyledListBox>
