@@ -28,7 +28,6 @@ export const HomePage = () => {
         page,
         totalPages,
         setPlayerPage,
-        getPlayers
     } = playersContext;
     const [searchValue, setSearchValue] = useState("")
     const [listColor, setListColor] = useState("darkred")
@@ -38,15 +37,7 @@ export const HomePage = () => {
 
     const handleKeys = (event: { key: string; repeat: any; }) => {
         if (event.key === "Enter" && !event.repeat && !isLoading) {
-            getPlayers(searchValue, page)
-        }
-        if (event.key === "ArrowRight" && !event.repeat && !isLoading) {
-            getPlayers(searchValue, page)
-            setPlayerPage(page + 1, searchValue)
-        }
-        if (event.key === "ArrowLeft" && !event.repeat && !isLoading) {
-            getPlayers(searchValue, page)
-            setPlayerPage(page + 1, searchValue)
+            setPlayerPage(1, searchValue)
         }
     }
 
@@ -76,9 +67,9 @@ export const HomePage = () => {
                         <SearchTitle>Enter Player's Name Here:</SearchTitle>
                         <StyledInput value={searchValue} onChange={(e) => setSearchValue(e.target.value)}/>
                         <SearchFieldButtonRow>
-                            {page > 0 && players.length > 0 && totalPages &&
+                            {page > 1 && players.length > 0 && totalPages &&
                               <ArrowButton onClick={() => setPlayerPage(page - 1, searchValue)}><StyledImage src={LeftArrow}/></ArrowButton>}
-                            <SearchButton onClick={() => getPlayers(searchValue, page)}>Search</SearchButton>
+                            <SearchButton onClick={() => setPlayerPage( 1, searchValue)}>Search</SearchButton>
                             {page < totalPages &&
                               <ArrowButton onClick={() => setPlayerPage(page + 1, searchValue)}><StyledImage src={RightArrow}/></ArrowButton>}
                         </SearchFieldButtonRow>
@@ -104,7 +95,7 @@ export const HomePage = () => {
                         <InputListColor>
                             <ColorListPadding>
                                 <CenteredColumn>
-                                    <SearchTitle>Type Here To Change This List Color:</SearchTitle>
+                                    <SearchTitle>Type Here To Change This List Background Color:</SearchTitle>
                                     <StyledInput value={listColor} onChange={(e) => setListColor(e.target.value)}/>
                                     {showPalette &&
                                       <PaletteContainer>

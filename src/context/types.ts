@@ -25,7 +25,6 @@ export interface IPlayerContextType {
     isLoading: boolean,
     favorites: IPlayer[];
     setPlayerPage: (newPage: number, playerName: string) => void;
-    getPlayers: (playerName: string, page: number) => void;
     addFavorite: (player: IPlayer) => void;
     removeFavorite: (id: number | string) => void;
 }

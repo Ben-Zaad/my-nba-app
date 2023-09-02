@@ -5,7 +5,7 @@ import {getPlayerByName} from "../api/playerService";
 
 const initialContext = {
     players: [],
-    page: 1,
+    page: 0,
     totalPages: 0,
     isLoading: false,
     favorites: [],
@@ -33,19 +33,6 @@ const PlayersProvider: React.FC<IPlayersProviderProps> = (
     const [favorites, setFavorites] = useState<IPlayer[]>(() => {
         return JSON.parse(localStorage.getItem("favorites") || "[]");
     });
-
-    const getPlayers = async (playerName: string, page: number) => {
-        setIsLoading(true)
-        try {
-            const fetchedPlayers = await getPlayerByName(playerName, page, setTotalPages)
-            if (fetchedPlayers) {
-                setPlayers(fetchedPlayers)
-                setIsLoading(false)
-            }
-        } catch (err) {
-
-        }
-    }
 
     const setPlayerPage = async (newPage: number, playerName: string) => {
         setIsLoading(true)
@@ -88,7 +75,6 @@ const PlayersProvider: React.FC<IPlayersProviderProps> = (
                 isLoading,
                 favorites,
                 setPlayerPage,
-                getPlayers,
                 addFavorite,
                 removeFavorite,
             }}
