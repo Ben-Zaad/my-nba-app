@@ -5,6 +5,8 @@ import {PlayerContext} from "../context/PlayerContext";
 import BasketBallIcon from "../assets/basket_ball_icon.svg";
 import GrayBasketBallIcon from "../assets/gray_basket_ball_icon.svg";
 import StarIcon from "../assets/star-icon.svg";
+import {SketchPicker} from 'react-color'
+import Switch from "react-switch";
 
 interface ColoredListProps {
     color: string;
@@ -12,76 +14,103 @@ interface ColoredListProps {
 
 export const HomePage = () => {
     const playersContext = useContext(PlayerContext);
-    const {players, favorites, addFavorite, removeFavorite, isLoading, page, totalPages, setPlayerPage, getPlayers} = playersContext;
+    const {
+        players,
+        favorites,
+        addFavorite,
+        removeFavorite,
+        isLoading,
+        page,
+        totalPages,
+        setPlayerPage,
+        getPlayers
+    } = playersContext;
     const [searchValue, setSearchValue] = useState("")
-    const [listColor, setListColor] = useState("Type a Color")
+    const [listColor, setListColor] = useState("darkred")
+    const [showPalette, setShowPalette] = useState(false)
+
+    const TABLE_HEADERS = ['First Name', 'Last Name', 'Height', 'Position', 'Team']
+
+    const RenderTableTitle = (values: string[], key: string) => {
+        return (<StyledRow key={key}>
+            <StyledImage src={StarIcon}/>
+            {values.map((value, index) => (
+                <StyledListBox key={value + index}>{value}</StyledListBox>
+            ))}
+        </StyledRow>)
+    }
 
     return (
         <HomePageContainer>
             <Row>
-            <HalfScreenContainer>
-                <SearchContainer>
-                    <SearchTitle>Enter Player's Name Here:</SearchTitle>
-                    <StyledInput value={searchValue} onChange={(e) => setSearchValue(e.target.value)}/>
-                    <SearchFieldButtonRow>
-                        {page > 0 && players.length > 0 && totalPages &&
-                          <ArrowButton onClick={() => setPlayerPage(page - 1, searchValue)}>{"<-"}</ArrowButton>}
-                        <SearchButton onClick={() => getPlayers(searchValue, page)}>Search</SearchButton>
-                        {page < totalPages &&
-                          <ArrowButton onClick={() => setPlayerPage(page + 1, searchValue)}>{"->"}</ArrowButton>}
-                    </SearchFieldButtonRow>
-                    Page {page} out of {totalPages}
-                </SearchContainer>
-                    <StyledRow key={'title'}>
-                        <StyledImage src={StarIcon}/>
-                        <StyledListBox>First Name</StyledListBox>
-                        <StyledListBox>Last Name</StyledListBox>
-                        <StyledListBox>Height</StyledListBox>
-                        <StyledListBox>Position</StyledListBox>
-                        <StyledListBox>Team</StyledListBox>
-                    </StyledRow>
-                <CustomScrollableContainer>
-                    {isLoading ? <>Loading...</> : players?.map((player) => {
-                        return (<StyledRow onClick={()=>addFavorite(player)} key={player.key}>
-                            <StyledImage src={favorites.includes(player) ? BasketBallIcon : GrayBasketBallIcon}/>
-                            <StyledListBox>{player.firstName}</StyledListBox>
-                            <StyledListBox>{player.lastName}</StyledListBox>
-                            <StyledListBox>{player.height}</StyledListBox>
-                            <StyledListBox>{player.position}</StyledListBox>
-                            <StyledListBox>{player?.team?.teamName}</StyledListBox>
-                        </StyledRow>)
-                    })}
-                </CustomScrollableContainer>
-            </HalfScreenContainer>
-            <HalfScreenContainer>
-                <ColoredList color={listColor}>
-                <InputListColor>
-                    <ColorListPadding>
-                    <SearchTitle>Type Here To Change This List Color:</SearchTitle>
-                <StyledInput value={listColor} onChange={(e)=>setListColor(e.target.value)} />
-                    </ColorListPadding>
-                    {favorites.length > 0 && <StyledRow key={'title'}>
-                        <StyledImage src={StarIcon}/>
-                        <StyledListBox>First Name</StyledListBox>
-                        <StyledListBox>Last Name</StyledListBox>
-                        <StyledListBox>Height</StyledListBox>
-                        <StyledListBox>Position</StyledListBox>
-                      <StyledListBox>Team</StyledListBox>
-                    </StyledRow>}
-                    {favorites.map((player => {
-                    return (
-                        <StyledRow onClick={()=>removeFavorite(player.id)} key={player.key + 'favorites'}>
-                            <StyledImage src={favorites.includes(player) ? BasketBallIcon : GrayBasketBallIcon}/>
-                            <StyledListBox>{player.firstName}</StyledListBox>
-                            <StyledListBox>{player.lastName}</StyledListBox>
-                            <StyledListBox>{player.height}</StyledListBox>
-                            <StyledListBox>{player.position}</StyledListBox>
-                            <StyledListBox>{player?.team?.teamName}</StyledListBox>
-                        </StyledRow>)
-                }))}
-                </InputListColor>
-                </ColoredList>
-            </HalfScreenContainer>
+                <HalfScreenContainer>
+                    <ColorCotainer >
+                    <SearchContainer>
+                        <SearchTitle>Enter Player's Name Here:</SearchTitle>
+                        <StyledInput value={searchValue} onChange={(e) => setSearchValue(e.target.value)}/>
+                        <SearchFieldButtonRow>
+                            {page > 0 && players.length > 0 && totalPages &&
+                              <ArrowButton onClick={() => setPlayerPage(page - 1, searchValue)}>{"<-"}</ArrowButton>}
+                            <SearchButton onClick={() => getPlayers(searchValue, page)}>Search</SearchButton>
+                            {page < totalPages &&
+                              <ArrowButton onClick={() => setPlayerPage(page + 1, searchValue)}>{"->"}</ArrowButton>}
+                        </SearchFieldButtonRow>
+                        Page {page} out of {totalPages}
+                    </SearchContainer>
+                    {RenderTableTitle(TABLE_HEADERS, 'title')}
+                    <CustomScrollableContainer>
+                        {isLoading ? <>Loading...</> : players?.map((player) => {
+                            return (<StyledRow onClick={() => addFavorite(player)} key={player.key}>
+                                <StyledImage src={favorites.includes(player) ? BasketBallIcon : GrayBasketBallIcon}/>
+                                <StyledListBox>{player.firstName}</StyledListBox>
+                                <StyledListBox>{player.lastName}</StyledListBox>
+                                <StyledListBox>{player.height}</StyledListBox>
+                                <StyledListBox>{player.position}</StyledListBox>
+                                <StyledListBox>{player?.team?.teamName}</StyledListBox>
+                            </StyledRow>)
+                        })}
+                    </CustomScrollableContainer>
+                    </ColorCotainer>
+                </HalfScreenContainer>
+                <HalfScreenContainer>
+                    <ColoredList color={listColor}>
+                        <InputListColor>
+                            <ColorListPadding>
+                                <CenteredColumn>
+                                    <SearchTitle>Type Here To Change This List Color:</SearchTitle>
+                                    <StyledInput value={listColor} onChange={(e) => setListColor(e.target.value)}/>
+                                    {showPalette &&
+                                      <PaletteContainer>
+                                        <SketchPicker color={listColor}
+                                                      disableAlpha={true}
+                                                      onChange={(a, b) => {
+                                                          setListColor(a?.hex)
+                                                      }
+                                                      }
+                                        />
+                                      </PaletteContainer>
+                                    }
+                                    <SearchTitle>Or Press here to open a color palette:</SearchTitle>
+                                    <Switch onChange={setShowPalette} checked={showPalette} />
+                                </CenteredColumn>
+                            </ColorListPadding>
+                            {favorites.length > 0 &&
+                                RenderTableTitle(TABLE_HEADERS, 'title')}
+                            {favorites.map((player => {
+                                return (
+                                    <StyledRow onClick={() => removeFavorite(player.id)} key={player.key + 'favorites'}>
+                                        <StyledImage
+                                            src={favorites.includes(player) ? BasketBallIcon : GrayBasketBallIcon}/>
+                                        <StyledListBox>{player.firstName}</StyledListBox>
+                                        <StyledListBox>{player.lastName}</StyledListBox>
+                                        <StyledListBox>{player.height}</StyledListBox>
+                                        <StyledListBox>{player.position}</StyledListBox>
+                                        <StyledListBox>{player?.team?.teamName}</StyledListBox>
+                                    </StyledRow>)
+                            }))}
+                        </InputListColor>
+                    </ColoredList>
+                </HalfScreenContainer>
             </Row>
         </HomePageContainer>
     )
@@ -94,13 +123,15 @@ const HomePageContainer = styled.div`
   overflow: hidden;
 `
 
-const SearchContainer = styled(Column)`
+const CenteredColumn = styled(Column)`
   align-content: center;
   align-items: center;
   justify-content: space-between;
+`
+
+const SearchContainer = styled(CenteredColumn)`
   width: 100%;
   min-height: 10rem;
-  background: linear-gradient(darkred, red, darkred);
 `
 
 const InputListColor = styled(Column)`
@@ -127,7 +158,7 @@ const SearchTitle = styled.div`
   font-size: 16px;
   font-weight: 600;
   padding-top: 1rem;
-  `
+`
 
 const SearchButton = styled.button`
   height: 30px;
@@ -173,11 +204,24 @@ const CustomScrollableContainer = styled(ScrollableContainer)`
 `
 
 const ColoredList = styled(FlexBox)<ColoredListProps>`
-    background-color: ${p=>p.color};
-    min-height: 100rem;
+  //background-color: ${p => p.color};
+  background: linear-gradient(${p => p.color}, whitesmoke 80%, ${p => p.color});
+  min-height: 100rem;
 `
 
 const ColorListPadding = styled.div`
   min-height: 10rem;
   text-align: center;
+`
+
+const PaletteContainer = styled.div`
+  position: absolute;
+  margin-left: 14rem;
+  margin-top: 8rem;
+//z-index: 2;
+`
+
+const ColorCotainer = styled.div`
+  background: linear-gradient(darkred, whitesmoke 80%, darkred);
+  height: 100%;
 `
